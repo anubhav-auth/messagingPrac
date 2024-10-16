@@ -14,5 +14,5 @@ type Mutation {
 }
 
 type Subscription {
-    messageAdded: Message!
+    messageAdded(topic:String!): Message!
 }

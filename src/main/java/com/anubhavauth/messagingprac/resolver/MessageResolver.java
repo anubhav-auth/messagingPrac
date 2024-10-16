@@ -16,7 +16,7 @@ import reactor.core.publisher.Flux;
 import java.util.List;
 
 @Controller
-public class MessageResolver implements GraphQLQueryResolver, GraphQLMutationResolver, GraphQLSubscriptionResolver {
+public class MessageResolver {
 
     private final MessageService messageService;
     private final SimpMessagingTemplate messagingTemplate;
@@ -39,8 +39,8 @@ public class MessageResolver implements GraphQLQueryResolver, GraphQLMutationRes
         return newMessage;
     }
 
-    @SubscriptionMapping("messageAdded")//can add the name of the schema here like this if the method name is diff
-    public Flux<Message> messageAdded(String topic) {
+    @SubscriptionMapping //can add the name of the schema here like this if the method name is diff
+    public Flux<Message> messageAdded(@Argument String topic) {
         return messageService.messageStream(topic);
     }
 }
