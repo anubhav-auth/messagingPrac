@@ -1,6 +1,6 @@
 package com.anubhavauth.messagingprac.service;
 
-import com.anubhavauth.messagingprac.entity.Message;
+import com.anubhavauth.messagingprac.models.Message;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
@@ -23,17 +23,12 @@ public class MessageService {
         return messages;
     }
 
-    public void addMessage(String topic, String content, String sender) {
-        Message newMessage = new Message(String.valueOf(messages.size() + 1),topic, content, sender);
-        messages.add(newMessage);
-
-        // Emit the new message to all subscribers
-        topicSinks.computeIfAbsent(topic,t-> Sinks.many().multicast().directAllOrNothing()).tryEmitNext(newMessage);
+    public void addMessage(Message mess) {
+        topicSinks.computeIfAbsent(mess.getTopic(),t-> Sinks.many().multicast().directAllOrNothing()).tryEmitNext(mess);
     }
 
     // Method to return a stream of messages
     public Flux<Message> messageStream(String topic) {
-
         return topicSinks.computeIfAbsent(topic, t -> Sinks.many().multicast().directAllOrNothing())
                 .asFlux();
     }

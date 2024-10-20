@@ -1,4 +1,4 @@
-package com.anubhavauth.messagingprac.entity;
+package com.anubhavauth.messagingprac.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,4 +14,10 @@ public class Message {
     private String topic;
     private String content;
     private String sender;
+    private String receiver;
+    private MessageStatus status;
+    private String sentAt;
+    private String deliveredAt;
+    private String readAt;
 }
+
