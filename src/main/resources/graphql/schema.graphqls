@@ -18,18 +18,24 @@ type Message {
     readAt: String!
 }
 
+type MessageStatusUpdates {
+    id: String!
+    receiver: String!
+    status: MessageStatus!
+    deliveredAt: String!
+    readAt: String!
+}
+
 type Query {
     syncMessages(topic: String): [Message!]!
 }
 
 type Mutation {
-    sendMessage(id: String!, topic:String!, content: String!, sender: String!): Message!
-    acknowledgeSent(messageID: String!): Message!
-    acknowledgeDelivery(messageId: String!): Message!
-    acknowledgeRead(messageId: String!): Message!
+    sendMessage(id: String!, topic: String!, content: String!, sender: String!, sentAt: String!): Message!
+    statusUpdate(messageId: String!, topic: String!, status: MessageStatus!, deliveredAt: String!, readAt: String!): MessageStatusUpdates!
 }
 
 type Subscription {
     messageAdded(topic:String!): Message!
-    messageStatusUpdated(topic: String!): Message!
+    messageUpdates(topic:String!): MessageStatusUpdates!
 }

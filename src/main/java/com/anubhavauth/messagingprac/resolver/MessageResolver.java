@@ -31,19 +31,19 @@ public class MessageResolver {
     }
 
     @MutationMapping
-    public Message sendMessage(@Argument String id, @Argument String topic, @Argument String content, @Argument String sender) {
+    public Message sendMessage(@Argument String id, @Argument String topic, @Argument String content, @Argument String sender, @Argument String sentAt) {
         Message newMessage = Message.builder()
                 .id(id)
                 .topic(topic)
                 .content(content)
                 .sender(sender)
                 .receiver(topic)
-                .status(MessageStatus.DELIVERED)
-                .sentAt(LocalDateTime.now().toString())
+                .status(MessageStatus.SENT)
+                .sentAt(sentAt)
                 .deliveredAt("")
                 .readAt("")
                 .build();
-        messageService.addMessage(newMessage);
+        messageService.addSink(newMessage);
         messagingTemplate.convertAndSend("/topic/"+topic, newMessage);
         return newMessage;
     }
@@ -52,4 +52,5 @@ public class MessageResolver {
     public Flux<Message> messageAdded(@Argument String topic) {
         return messageService.messageStream(topic);
     }
+
 }

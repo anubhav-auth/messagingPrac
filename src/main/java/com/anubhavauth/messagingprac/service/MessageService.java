@@ -23,7 +23,7 @@ public class MessageService {
         return messages;
     }
 
-    public void addMessage(Message mess) {
+    public void addSink(Message mess) {
         topicSinks.computeIfAbsent(mess.getTopic(),t-> Sinks.many().multicast().directAllOrNothing()).tryEmitNext(mess);
     }
 
